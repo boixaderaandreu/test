@@ -36,12 +36,10 @@ class HomepageController extends AbstractController
 
         $searchTerm = $request->query->get('search');
 
-        if ($searchTerm) {
-            $characters = $this->entityManager->getRepository(Character::class)
-                ->findBy(['name' => $searchTerm]);
+        if (!empty($searchTerm)) {
+            $characters = $this->entityManager->getRepository(Character::class)->findBy(['name' => $searchTerm]);
         } else {
-            $characters = $this->entityManager->getRepository(Character::class)
-                ->findAll();
+            $characters = $this->entityManager->getRepository(Character::class)->findAll();
         }
 
         return $this->render('homepage/index.html.twig', [
