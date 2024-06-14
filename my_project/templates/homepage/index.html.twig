@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'homepage' %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <h1>Characters List</h1>
+</div>
+
+{# Search Form #}
+<form action="{{ app.request.uri }}" method="get">
+    <input type="text" name="search" value="{{ searchTerm }}" placeholder="Search by name...">
+    <button type="submit">Search</button>
+</form>
+
+{# Characters List #}
+<ul class="characters-list">
+    {% if characters is not empty %}
+        {% for character in characters %}
+            <li class="character" data-id="{{ character.id }}">
+                <span class="character-name">{{ character.name }}</span>
+                <div class="character-details" style="display: none;">
+                    <img src="{{ asset('images/' ~ character.image) }}" alt="{{ character.name }}">
+                    <p>Mass: {{ character.mass }} kg</p>
+                    <p>Height: {{ character.height }} cm</p>
+                </div>
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>No characters found.</li>
+    {% endif %}
+</ul>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var characters = document.querySelectorAll('.character');
+
+        characters.forEach(function(character) {
+            character.addEventListener('click', function() {
+                var details = this.querySelector('.character-details');
+                details.style.display = details.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}

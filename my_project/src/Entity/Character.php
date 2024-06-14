@@ -4,10 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="characters")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'characters')]
 class Character
 {
     /**
