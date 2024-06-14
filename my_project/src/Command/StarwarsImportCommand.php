@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\MoviesCharacter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -68,7 +69,7 @@ class StarwarsImportCommand extends Command
                 }
 
                 // Create and persist the MovieCharacter entity
-                $movieCharacter = new MovieCharacter();
+                $movieCharacter = new MoviesCharacter();
                 $movieCharacter->setMovie($movie);
                 $movieCharacter->setCharacter($character);
                 $this->entities->persist($movieCharacter);
