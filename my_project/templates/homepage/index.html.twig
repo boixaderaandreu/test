@@ -11,7 +11,7 @@
 
 {# Search Form #}
 <form action="{{ app.request.uri }}" method="get">
-    <input type="text" name="search" value="{{ searchTerm }}" placeholder="Search by name...">
+    <input type="text" class="search-form" name="search" value="{{ searchTerm }}" placeholder="Search by name...">
     <button type="submit">Search</button>
 </form>
 
@@ -20,11 +20,23 @@
     {% if characters is not empty %}
         {% for character in characters %}
             <li class="character" data-id="{{ character.id }}">
-                <span class="character-name">{{ character.name }}</span>
+
+                <div class="character-name">
+                    <div class="float-left">{{ character.name }}</div>
+                    <div class="text-right">
+                        <form action="{{ path('character_remove', {'id': character.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this character?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="character-details" style="display: none;">
-                    <img src="{{ asset('images/' ~ character.image) }}" alt="{{ character.name }}">
-                    <p>Mass: {{ character.mass }} kg</p>
-                    <p>Height: {{ character.height }} cm</p>
+                    {% if character.image is not empty %}<img src="{{ asset('images/' ~ character.image) }}" alt="{{ character.name }}">{% endif %}
+                    {% if character.mass is not empty %}<p><b>Mass:</b> {{ character.mass }} kg</p>{% endif %}
+                    {% if character.height is not empty %}<p><b>Height:</b> {{ character.height }} cm</p>{% endif %}
+                    {% if character.gender is not empty %}<p><b>Gender:</b> {{ character.gender }}</p>{% endif %}
+                    <a class="btn btn-primary" href="{{ path('homepage') }}character/{{ character.id }}/edit">Edit</a>
                 </div>
             </li>
         {% endfor %}
@@ -32,7 +44,7 @@
         <li>No characters found.</li>
     {% endif %}
 </ul>
-    
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var characters = document.querySelectorAll('.character');
@@ -45,6 +57,63 @@
         });
     });
 </script>
+
+<style>
+    .page-header {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .remove-button {
+        float: right;
+    }
+
+    .search-form {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .characters-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .character {
+        cursor: pointer;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+    }
+
+    .character:hover {
+        background-color: #e9e9e9;
+    }
+
+    .character-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .character-details {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+    }
+
+    .character-image {
+        max-width: 100px;
+        max-height: 100px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .character-info p {
+        margin: 5px 0;
+    }
+</style>
 
 {% endblock %}
 
